@@ -10,46 +10,79 @@
     <div class="container">
         <!-- Encabezado principal -->
         <header class="header">
-            <h1 class="header__title">Registro de Mensajes</h1>
-            <p class="header__subtitle">Practica la manipulación del DOM en tiempo real</p>
+            <h1 class="header__title">Registro de Tareas</h1>
         </header>
 
         <!-- Formulario de entrada -->
         <section class="form-section">
             <div class="card">
-                <h2 class="card__title">Nuevo Mensaje</h2>
+                <h2 class="card__title">Nueva Tarea</h2>
                 
-                <form id="messageForm" class="form" novalidate>
+                <form id="messageForm" class="form" novalidate autocomplete="off">
+                    <div class="form__group">
+                        <label for="userID" class="form__label">
+                            Numero de Documento
+                        </label>
+                        <input 
+                            type="text" 
+                            id="userID" 
+                            class="form__input" 
+                            placeholder="Ingresa tu documento"
+                            aria-required="true"
+                            autocomplete="off"
+                            required
+                        >
+                        <span class="form__error" id="userIDError"></span>
+                    </div>
+
                     <div class="form__group">
                         <label for="userName" class="form__label">
                             Nombre de usuario
                         </label>
                         <input 
-                            type="text" 
-                            id="userName" 
-                            class="form__input" 
-                            placeholder="Ingresa tu nombre"
+                                type="text" 
+                                id="userName" 
+                                list="usersList"
+                                class="form__input" 
+                                placeholder="Ingresa tu nombre"
+                                aria-required="true"
+                                autocomplete="off"
+                            >
+                        <span class="form__error" id="userNameError"></span>
+                    
+                    
+                    <!-- Datalist para sugerencias de usuario según documento -->
+                    <datalist id="usersList"></datalist>
+                    
+                    <!-- Nuevo campo: Nombre de la tarea -->
+                    <div class="form__group">
+                        <label for="taskName" class="form__label">Nombre de la tarea</label>
+                        <input
+                            type="text"
+                            id="taskName"
+                            class="form__input"
+                            placeholder="Título de la tarea"
                             aria-required="true"
                         >
-                        <span class="form__error" id="userNameError"></span>
+                        <span class="form__error" id="taskNameError"></span>
                     </div>
 
                     <div class="form__group">
-                        <label for="userMessage" class="form__label">
-                            Tu mensaje
+                        <label for="userTarea" class="form__label">
+                            Descripción de la tarea
                         </label>
                         <textarea 
-                            id="userMessage" 
+                            id="userTarea" 
                             class="form__input form__textarea" 
-                            placeholder="Escribe tu mensaje aquí..."
+                            placeholder="Escribe tu tarea aquí..."
                             rows="4"
                             aria-required="true"
                         ></textarea>
-                        <span class="form__error" id="userMessageError"></span>
+                        <span class="form__error" id="userTareaError"></span>
                     </div>
 
                     <button type="submit" class="btn btn--primary" id="submitBtn">
-                        <span class="btn__text">Agregar Mensaje</span>
+                        <span class="btn__text">Asignar Tarea</span>
                         <span class="btn__icon">➤</span>
                     </button>
                 </form>
@@ -59,8 +92,8 @@
         <!-- Área de mensajes -->
         <section class="messages-section">
             <div class="messages-header">
-                <h2 class="messages-header__title">Mensajes Publicados</h2>
-                <span class="messages-header__count" id="messageCount">0 mensajes</span>
+                <h2 class="messages-header__title">Tareas Publicadas</h2>
+                <span class="messages-header__count" id="messageCount">0 Tareas</span>
             </div>
             
             <div id="messagesContainer" class="messages-container">
@@ -69,9 +102,11 @@
                     <svg class="messages-empty__icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     </svg>
-                    <p class="messages-empty__text">Aún no hay mensajes</p>
-                    <p class="messages-empty__subtext">Completa el formulario para agregar tu primer mensaje</p>
+                    <p class="messages-empty__text">Aún no hay tareas</p>
+                    <p class="messages-empty__subtext">Completa el formulario para agregar tu primera tarea</p>
+
                 </div>
+                
             </div>
         </section>
 

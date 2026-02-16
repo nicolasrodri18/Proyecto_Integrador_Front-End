@@ -156,7 +156,6 @@ body {
 /* ============================================
    CARD COMPONENT
    ============================================ */
-
 .card {
     background: var(--color-surface);
     border-radius: var(--radius-lg);
@@ -507,3 +506,4 @@ body {
         transform: scale(0.95);
     }
 }
+

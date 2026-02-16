@@ -9,169 +9,118 @@
  * Autor: [Tu nombre aquí]
  * Fecha: [Fecha actual]
  * ============================================
- */
 
 // ============================================
 // 1. SELECCIÓN DE ELEMENTOS DEL DOM
 // ============================================
-
-/**
- * Seleccionamos los elementos del DOM que necesitamos manipular.
- * Usamos getElementById para obtener referencias a los elementos únicos.
- */
-
+**/
 // Formulario
-const messageForm = document.getElementById('messageForm');
+const messageFormEl = document.getElementById('messageForm'); // form principal
 
 // Campos de entrada
-const userNameInput = document.getElementById('userName');
-const userMessageInput = document.getElementById('userMessage');
+const userIDInput = document.getElementById('userID'); // documento (solo números)
+const userNameInput = document.getElementById('userName'); // nombre (datalist)
+const taskNameInput = document.getElementById('taskName'); // título de la tarea
+const userTareaInput = document.getElementById('userTarea'); // descripción
+const taskStatusInput = document.getElementById('taskStatus'); // activa/inactiva
 
 // Botón de envío
-const submitBtn = document.getElementById('submitBtn');
+const submitBtnEl = document.getElementById('submitBtn');
 
 // Elementos para mostrar errores
+const userIDError = document.getElementById('userIDError');
 const userNameError = document.getElementById('userNameError');
-const userMessageError = document.getElementById('userMessageError');
+const taskNameError = document.getElementById('taskNameError');
+const taskStatusError = document.getElementById('taskStatusError');
+const userTareaError = document.getElementById('userTareaError');
 
 // Contenedor donde se mostrarán los mensajes
-const messagesContainer = document.getElementById('messagesContainer');
+const messagesContainerEl = document.getElementById('messagesContainer');
+
+// Datalist para sugerencias de usuarios
+const usersList = document.getElementById('usersList');
 
 // Estado vacío (mensaje que se muestra cuando no hay mensajes)
-const emptyState = document.getElementById('emptyState');
+const emptyStateEl = document.getElementById('emptyState');
 
 // Contador de mensajes
-const messageCount = document.getElementById('messageCount');
+const messageCountEl = document.getElementById('messageCount');
+
+// Dataset de ejemplo (reemplaza por llamada a API si tienes datos reales)
+
+// Simulacion de datos sin backend 
+const users = [
+    { id: '10314', name: 'Ana Pérez' },
+    { id: '10314', name: 'Carlos Ruiz' },
+    { id: '20456', name: 'María Gómez' },
+    { id: '20456', name: 'Luis Herrera' },
+    { id: '30001', name: 'Sofía Martínez' }
+];
 
 // Variable para llevar el conteo de mensajes
-let totalMessages = 0;
+let totalMessagesCount = 0;
 
 
 // ============================================
 // 2. FUNCIONES AUXILIARES
 // ============================================
 
-/**
- * Valida que un campo no esté vacío ni contenga solo espacios en blanco
- * @param {string} value - El valor a validar
- * @returns {boolean} - true si es válido, false si no lo es
- */
 function isValidInput(value) {
-    // TODO: Implementar validación
-    // Pista: usa trim() para eliminar espacios al inicio y final
-    // Retorna true si después de trim() el string tiene longitud > 0
+    // true si el valor no está vacío
+    return String(value).trim().length > 0;
 }
 
-/**
- * Muestra un mensaje de error en un elemento específico
- * @param {HTMLElement} errorElement - Elemento donde mostrar el error
- * @param {string} message - Mensaje de error a mostrar
- */
 function showError(errorElement, message) {
-    // TODO: Implementar función para mostrar error
-    // Pista: asigna el mensaje al textContent del elemento
+    if (!errorElement) return;
+    errorElement.textContent = message; // muestra texto en el span de error
 }
 
-/**
- * Limpia el mensaje de error de un elemento específico
- * @param {HTMLElement} errorElement - Elemento del que limpiar el error
- */
 function clearError(errorElement) {
-    // TODO: Implementar función para limpiar error
-    // Pista: asigna un string vacío al textContent
+    if (!errorElement) return;
+    errorElement.textContent = '';
 }
 
-/**
- * Valida todos los campos del formulario
- * @returns {boolean} - true si todos los campos son válidos, false si alguno no lo es
- */
-function validateForm() {
-    // TODO: Implementar validación completa del formulario
-    // 1. Obtener los valores de los inputs usando .value
-    // 2. Crear una variable para saber si el formulario es válido (inicialmente true)
-    // 3. Validar el campo de nombre de usuario
-    //    - Si no es válido, mostrar error y cambiar la variable a false
-    //    - Si es válido, limpiar el error
-    // 4. Validar el campo de mensaje
-    //    - Si no es válido, mostrar error y cambiar la variable a false
-    //    - Si es válido, limpiar el error
-    // 5. Retornar si el formulario es válido o no
-    
-    // Ejemplo de estructura:
-    /*
-    const userName = userNameInput.value;
-    const userMessage = userMessageInput.value;
-    let isValid = true;
-    
-    // Validar nombre
-    if (!isValidInput(userName)) {
-        // Mostrar error
-        // Agregar clase 'error' al input
-        isValid = false;
-    } else {
-        // Limpiar error
-        // Remover clase 'error' del input
-    }
-    
-    // Validar mensaje (estructura similar)
-    
-    return isValid;
-    */
-}
-
-/**
- * Obtiene la fecha y hora actual formateada
- * @returns {string} - Fecha y hora en formato legible
- */
 function getCurrentTimestamp() {
     const now = new Date();
-    const options = { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    };
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
     return now.toLocaleDateString('es-ES', options);
 }
 
-/**
- * Obtiene las iniciales de un nombre
- * @param {string} name - Nombre completo
- * @returns {string} - Iniciales en mayúsculas
- */
 function getInitials(name) {
-    // TODO: Implementar función para obtener iniciales
-    // Pista: 
-    // 1. Separar el nombre por espacios usando split(' ')
-    // 2. Tomar la primera letra de cada palabra
-    // 3. Unirlas y convertirlas a mayúsculas
-    // 4. Si solo hay una palabra, retornar las dos primeras letras
+    const parts = String(name).trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return '';
+    if (parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+    return parts.map(p => p[0]).slice(0,2).join('').toUpperCase();
 }
 
-/**
- * Actualiza el contador de mensajes
- */
 function updateMessageCount() {
-    // TODO: Implementar actualización del contador
-    // Pista: Usa template literals para crear el texto
-    // Formato: "X mensaje(s)" o "X mensajes"
+    if (!messageCountEl) return;
+    messageCountEl.textContent = `${totalMessagesCount} Tarea${totalMessagesCount !== 1 ? 's' : ''}`;
 }
 
-/**
- * Oculta el estado vacío (mensaje cuando no hay mensajes)
- */
 function hideEmptyState() {
-    // TODO: Implementar función para ocultar el estado vacío
-    // Pista: Agrega la clase 'hidden' al elemento emptyState
+    if (!emptyStateEl) return;
+    emptyStateEl.classList.add('hidden');
 }
 
-/**
- * Muestra el estado vacío (mensaje cuando no hay mensajes)
- */
 function showEmptyState() {
-    // TODO: Implementar función para mostrar el estado vacío
-    // Pista: Remueve la clase 'hidden' del elemento emptyState
+    if (!emptyStateEl) return;
+    emptyStateEl.classList.remove('hidden');
+}
+
+function populateUserSuggestions(documentNumber) {
+    if (!usersList) return;
+    usersList.innerHTML = '';
+    if (!documentNumber) return;
+
+    // uso de la base de datos simulada para controlar sin conexion a backend
+    const matches = users.filter(u => u.id === documentNumber);
+    if (matches.length === 0) return;
+    matches.forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.name;
+        usersList.appendChild(opt);
+    });
 }
 
 
@@ -179,40 +128,20 @@ function showEmptyState() {
 // 3. CREACIÓN DE ELEMENTOS
 // ============================================
 
-/**
- * Crea un nuevo elemento de mensaje en el DOM
- * @param {string} userName - Nombre del usuario
- * @param {string} message - Contenido del mensaje
- */
-function createMessageElement(userName, message) {
-    // TODO: Implementar la creación de un nuevo mensaje
-    
-    // PASO 1: Crear el contenedor principal del mensaje
-    // Pista: document.createElement('div')
-    // Asignar la clase 'message-card'
-    
-    // PASO 2: Crear la estructura HTML del mensaje
-    // Puedes usar innerHTML con la siguiente estructura:
-    /*
-    <div class="message-card__header">
-        <div class="message-card__user">
-            <div class="message-card__avatar">[INICIALES]</div>
-            <span class="message-card__username">[NOMBRE]</span>
-        </div>
-        <span class="message-card__timestamp">[FECHA]</span>
-    </div>
-    <div class="message-card__content">[MENSAJE]</div>
-    */
-    
-    // PASO 3: Insertar el nuevo elemento en el contenedor de mensajes
-    // Pista: messagesContainer.appendChild(nuevoElemento)
-    // O usar insertBefore para agregarlo al principio
-    
-    // PASO 4: Incrementar el contador de mensajes
-    
-    // PASO 5: Actualizar el contador visual
-    
-    // PASO 6: Ocultar el estado vacío si está visible
+function createMessageElement(userID, userName, taskTitle, taskDesc) {
+    // construir tarjeta de tarea (avatar, usuario, timestamp, título, descripción)
+    const card = document.createElement('div'); card.className = 'message-card';
+    const header = document.createElement('div'); header.className = 'message-card__header';
+    const userWrap = document.createElement('div'); userWrap.className = 'message-card__user';
+    const avatar = document.createElement('div'); avatar.className = 'message-card__avatar'; avatar.textContent = getInitials(userName);
+    const usernameSpan = document.createElement('span'); usernameSpan.className = 'message-card__username'; usernameSpan.textContent = userName;
+    userWrap.appendChild(avatar); userWrap.appendChild(usernameSpan);
+    const timestamp = document.createElement('span'); timestamp.className = 'message-card__timestamp'; timestamp.textContent = getCurrentTimestamp();
+    header.appendChild(userWrap); header.appendChild(timestamp);
+    const titleEl = document.createElement('div'); titleEl.className = 'message-card__title'; titleEl.textContent = taskTitle;
+    const contentEl = document.createElement('div'); contentEl.className = 'message-card__content'; contentEl.textContent = taskDesc;
+    card.appendChild(header); card.appendChild(titleEl); card.appendChild(contentEl);
+    return card;
 }
 
 
@@ -220,40 +149,106 @@ function createMessageElement(userName, message) {
 // 4. MANEJO DE EVENTOS
 // ============================================
 
-/**
- * Maneja el evento de envío del formulario
- * @param {Event} event - Evento del formulario
- */
-function handleFormSubmit(event) {
-    // TODO: Implementar el manejador del evento submit
-    
-    // PASO 1: Prevenir el comportamiento por defecto del formulario
-    // Pista: event.preventDefault()
-    
-    // PASO 2: Validar el formulario
-    // Si no es válido, detener la ejecución (return)
-    
-    // PASO 3: Obtener los valores de los campos
-    
-    // PASO 4: Crear el nuevo elemento de mensaje
-    // Llamar a createMessageElement con los valores obtenidos
-    
-    // PASO 5: Limpiar el formulario
-    // Pista: messageForm.reset()
-    
-    // PASO 6: Limpiar los errores
-    
-    // PASO 7: Opcional - Enfocar el primer campo para facilitar agregar otro mensaje
-    // Pista: userNameInput.focus()
+function validateForm() {
+    let isValid = true;
+
+    const idVal = userIDInput ? userIDInput.value.trim() : '';
+    const nameVal = userNameInput ? userNameInput.value.trim() : '';
+    const taskTitleVal = taskNameInput ? taskNameInput.value.trim() : '';
+    const taskStatusVal = taskStatusInput ? taskStatusInput.value : '';
+    const taskDescVal = userTareaInput ? userTareaInput.value.trim() : '';
+
+    // limpiar previos
+    clearError(userIDError); clearError(userNameError); clearError(taskNameError); clearError(userTareaError);
+    userIDInput && userIDInput.classList.remove('error');
+    userNameInput && userNameInput.classList.remove('error');
+    taskNameInput && taskNameInput.classList.remove('error');
+    userTareaInput && userTareaInput.classList.remove('error');
+
+    if (!isValidInput(idVal)) {
+        showError(userIDError, 'Número de documento requerido');
+        userIDInput.classList.add('error');
+        isValid = false;
+    } else if (!/^\d+$/.test(idVal)) {
+        showError(userIDError, 'El documento debe contener solo números');
+        userIDInput.classList.add('error');
+        isValid = false;
+    }
+
+        // verificar que el documento exista en la base de datos local
+        const matchingUsers = users.filter(u => u.id === idVal);
+        if (idVal && matchingUsers.length === 0) {
+            showError(userIDError, 'Usuario no registrado');
+            userIDInput.classList.add('error');
+            isValid = false;
+        }
+
+    if (!isValidInput(nameVal)) {
+        showError(userNameError, 'Nombre de usuario requerido');
+        userNameInput.classList.add('error');
+        isValid = false;
+    }
+
+    if (!isValidInput(taskTitleVal)) {
+        showError(taskNameError, 'Nombre de la tarea requerido');
+        taskNameInput.classList.add('error');
+        isValid = false;
+    }
+
+    // validar estado (opcional, pero aseguramos valores válidos)
+    if (taskStatusInput && !['activa', 'inactiva'].includes(taskStatusVal)) {
+        showError(taskStatusError, 'Estado inválido');
+        taskStatusInput.classList.add('error');
+        isValid = false;
+    }
+
+    if (!isValidInput(taskDescVal)) {
+        showError(userTareaError, 'Descripción de la tarea requerida');
+        userTareaInput.classList.add('error');
+        isValid = false;
+    }
+
+    return isValid;
 }
 
-/**
- * Limpia los errores cuando el usuario empieza a escribir
- */
-function handleInputChange() {
-    // TODO: Implementar limpieza de errores al escribir
-    // Esta función se ejecuta cuando el usuario escribe en un campo
-    // Debe limpiar el error de ese campo específico
+function handleInputChange(e) {
+    const target = e.target;
+    if (!target) return;
+    if (target === userIDInput) {
+        const cleaned = target.value.replace(/\D+/g, '');
+        if (target.value !== cleaned) target.value = cleaned;
+        clearError(userIDError);
+        target.classList.remove('error');
+        populateUserSuggestions(cleaned);
+        if (!cleaned) usersList && (usersList.innerHTML = '');
+    }
+    if (target === userNameInput) { clearError(userNameError); target.classList.remove('error'); }
+    if (target === taskNameInput) { clearError(taskNameError); target.classList.remove('error'); }
+    if (target === taskStatusInput) { clearError(taskStatusError); target.classList.remove('error'); }
+    if (target === userTareaInput) { clearError(userTareaError); target.classList.remove('error'); }
+}
+
+function handleFormSubmit(event) {
+    event.preventDefault(); // evitar envío por defecto
+    if (!validateForm()) return; // bloquear si inválido
+
+    const documento = userIDInput.value.trim(); const nombre = userNameInput.value.trim();
+    const taskTitle = taskNameInput.value.trim(); const tarea = userTareaInput.value.trim();
+    const status = taskStatusInput ? taskStatusInput.value : 'activa';
+
+    const card = createMessageElement(documento, nombre, taskTitle, tarea);
+    // estado: atributo + badge al final
+    if (taskStatusInput) {
+        card.dataset.status = status;
+        const statusEl = document.createElement('div');
+        statusEl.className = 'message-card__status ' + (status === 'activa' ? 'activa' : 'inactiva');
+        statusEl.textContent = status === 'activa' ? 'Activa' : 'Inactiva';
+        card.appendChild(statusEl);
+    }
+    messagesContainerEl.insertBefore(card, messagesContainerEl.firstChild);
+
+    totalMessagesCount++; updateMessageCount(); hideEmptyState();
+    messageFormEl.reset(); usersList && (usersList.innerHTML = '');
 }
 
 
@@ -261,55 +256,31 @@ function handleInputChange() {
 // 5. REGISTRO DE EVENTOS
 // ============================================
 
-/**
- * Aquí registramos todos los event listeners
- */
+if (messageFormEl) messageFormEl.addEventListener('submit', handleFormSubmit);
+if (userIDInput) userIDInput.addEventListener('input', handleInputChange);
+if (userNameInput) userNameInput.addEventListener('input', handleInputChange);
+if (taskNameInput) taskNameInput.addEventListener('input', handleInputChange);
+if (userTareaInput) userTareaInput.addEventListener('input', handleInputChange);
+if (taskStatusInput) taskStatusInput.addEventListener('change', handleInputChange);
 
-// TODO: Registrar el evento 'submit' en el formulario
-// Pista: messageForm.addEventListener('submit', handleFormSubmit);
+if (userIDInput) userIDInput.addEventListener('input', (e) => {
+    const cleaned = e.target.value.replace(/\D+/g, '');
+    if (e.target.value !== cleaned) e.target.value = cleaned;
+    populateUserSuggestions(cleaned);
+});
 
-// TODO: Registrar eventos 'input' en los campos para limpiar errores al escribir
-// Pista: userNameInput.addEventListener('input', handleInputChange);
-// Pista: userMessageInput.addEventListener('input', handleInputChange);
+if (userNameInput) {
+    userNameInput.addEventListener('focus', function() {
+        const idVal = userIDInput ? userIDInput.value.replace(/\D+/g, '') : '';
+        populateUserSuggestions(idVal);
+    });
+}
 
+// Inicializar contador
+updateMessageCount();
 
-// ============================================
-// 6. REFLEXIÓN Y DOCUMENTACIÓN
-// ============================================
-
-/**
- * PREGUNTAS DE REFLEXIÓN:
- * 
- * 1. ¿Qué elemento del DOM estás seleccionando?
- *    R: 
- * 
- * 2. ¿Qué evento provoca el cambio en la página?
- *    R: 
- * 
- * 3. ¿Qué nuevo elemento se crea?
- *    R: 
- * 
- * 4. ¿Dónde se inserta ese elemento dentro del DOM?
- *    R: 
- * 
- * 5. ¿Qué ocurre en la página cada vez que repites la acción?
- *    R: 
- */
-
-
-// ============================================
-// 7. INICIALIZACIÓN (OPCIONAL)
-// ============================================
-
-/**
- * Esta función se ejecuta cuando el DOM está completamente cargado
- */
 document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ DOM completamente cargado');
-    console.log('📝 Aplicación de registro de mensajes iniciada');
-    
-    // Aquí puedes agregar cualquier inicialización adicional
-    // Por ejemplo, cargar mensajes guardados del localStorage
 });
 
 

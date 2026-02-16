@@ -67,6 +67,16 @@
                         <span class="form__error" id="taskNameError"></span>
                     </div>
 
+                    <!-- Nuevo campo: Estado de la tarea -->
+                    <div class="form__group">
+                        <label for="taskStatus" class="form__label">Estado</label>
+                        <select id="taskStatus" class="form__input" aria-required="true">
+                            <option value="activa">Activa</option>
+                            <option value="inactiva">Inactiva</option>
+                        </select>
+                        <span class="form__error" id="taskStatusError"></span>
+                    </div>
+
                     <div class="form__group">
                         <label for="userTarea" class="form__label">
                             Descripción de la tarea

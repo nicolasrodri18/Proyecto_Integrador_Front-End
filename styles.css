@@ -411,6 +411,25 @@ body {
     word-wrap: break-word;
 }
 
+/* Badge de estado (último elemento en la card) */
+.message-card__status {
+    display: inline-block;
+    color: #fff;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+    padding: 0.35rem 0.6rem;
+    border-radius: 9999px;
+    margin-top: var(--spacing-md);
+}
+
+.message-card__status.activa {
+    background-color: var(--color-success);
+}
+
+.message-card__status.inactiva {
+    background-color: var(--color-error);
+}
+
 /* ============================================
    FOOTER
    ============================================ */

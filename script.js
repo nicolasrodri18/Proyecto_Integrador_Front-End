@@ -336,7 +336,7 @@ function validateForm() {
 // 6. CREACIÓN DE ELEMENTOS
 // ============================================
 
-function createMessageElement(userID, userName, taskTitle, taskDesc, status) {
+function createMessageElement(userID, userName, taskTitle, taskDesc, status, storedFecha) {
     const card = document.createElement('div'); card.className = 'message-card';
     const header = document.createElement('div'); header.className = 'message-card__header';
     const userWrap = document.createElement('div'); userWrap.className = 'message-card__user';
@@ -354,7 +354,8 @@ function createMessageElement(userID, userName, taskTitle, taskDesc, status) {
 
     const timestamp = document.createElement('span');
     timestamp.className = 'message-card__timestamp';
-    timestamp.textContent = getCurrentTimestamp();
+    // Mostrar la fecha almacenada si existe; en caso contrario usar la fecha actual
+    timestamp.textContent = storedFecha ? storedFecha : getCurrentTimestamp();
 
     header.appendChild(userWrap);
     header.appendChild(timestamp);
@@ -467,7 +468,8 @@ async function handleFormSubmit(event) {
             currentUser.nombre_completo,
             taskTitle,
             taskDesc,
-            taskStatus
+            taskStatus,
+            nuevaTarea.fecha
         );
 
         messagesContainerEl.insertBefore(card, messagesContainerEl.firstChild);
@@ -533,13 +535,14 @@ async function cargarTareasExistentes() {
         const tareasOrdenadas = [...tareas].reverse();
 
         tareasOrdenadas.forEach(tarea => {
-            const card = createMessageElement(
-                tarea.userId,
-                tarea.nombre_completo,
-                tarea.title,
-                tarea.description,
-                tarea.status
-            );
+                const card = createMessageElement(
+                    tarea.userId,
+                    tarea.nombre_completo,
+                    tarea.title,
+                    tarea.description,
+                    tarea.status,
+                    tarea.fecha
+                );
             messagesContainerEl.appendChild(card);
         });
 

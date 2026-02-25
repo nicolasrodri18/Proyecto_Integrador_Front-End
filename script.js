@@ -36,6 +36,7 @@
  * - updateTarea.js controla la lógica de comunicación HTTP.
  */
 import { actualizarTarea } from './use-case/updateTarea.js';
+import { eliminarTarea } from './use-case/deleteTarea.js';
 
 
 // ==========================================================
@@ -724,6 +725,31 @@ async function manejarClickEditar(taskId) {
 }
 
 
+// Maneja la eliminación de una tarea (flujo DELETE)
+async function manejarClickEliminar(taskId) {
+    try {
+        const confirmar = confirm('¿Desea eliminar esta tarea? Esta acción no se puede deshacer.');
+        if (!confirmar) return;
+
+        await eliminarTarea(taskId);
+
+        const card = document.querySelector(`.message-card[data-id="${taskId}"]`);
+        if (card) card.remove();
+
+        totalMessagesCount = Math.max(0, totalMessagesCount - 1);
+        updateMessageCount();
+
+        if (totalMessagesCount === 0) showEmptyState();
+
+        mostrarNotificacion('Tarea eliminada correctamente');
+
+    } catch (error) {
+        console.error('Error al eliminar la tarea:', error);
+        alert('Error al eliminar la tarea. Verifica que el servidor esté disponible.');
+    }
+}
+
+
 // Muestra botón cancelar solo en modo edición.
 function mostrarBotonCancelar() {
     let btnCancel = document.getElementById('btnCancelEdit');
@@ -783,6 +809,13 @@ function manejarClickCard(e) {
     if (action === 'edit' && taskId) {
         e.preventDefault();
         manejarClickEditar(taskId);
+        return;
+    }
+
+    if (action === 'delete' && taskId) {
+        e.preventDefault();
+        manejarClickEliminar(taskId);
+        return;
     }
 }
 

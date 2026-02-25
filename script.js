@@ -864,7 +864,7 @@ async function handleFormSubmit(event) {
             actualizarCardEnDOM(editingTaskId, tareaActualizada);
 
             alert('✅ Tarea actualizada correctamente');
-
+            messageFormEl.reset();
             cancelarEdicion();
             cargarTareasExistentes(); // Refuerza sincronización con backend
 

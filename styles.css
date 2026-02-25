@@ -430,6 +430,48 @@ body {
     background-color: var(--color-error);
 }
 
+/* Contenedor de los botones */
+.message-card__botones {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px; 
+}
+
+/* El botón de eliminar */
+.message-card__eliminar {
+    background-color: var(--color-eliminar);
+    color:white;
+    border-radius: 10px;
+    border:none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 12px;
+    
+}
+
+/* El botón de eliminar */
+.message-card__editar {
+    background-color: var(--color-editar);
+    color:white;
+    border-radius: 10px;
+    border:none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 12px;
+}
+
+.message-card__editar:hover {
+    background-color: rgb(64, 89, 229);
+}
+
+.message-card__eliminar:hover {
+    background-color: rgb(226, 24, 24);
+}
+
+
 /* ============================================
    FOOTER
    ============================================ */

@@ -372,10 +372,25 @@ function createMessageElement(userID, userName, taskTitle, taskDesc, status, sto
     statusEl.className = 'message-card__status ' + (status === 'activa' ? 'activa' : 'inactiva');
     statusEl.textContent = status === 'activa' ? 'Activa' : 'Inactiva';
 
+    
+    const botones = document.createElement('div'); 
+    botones.className = 'message-card__botones'
+
+    const eliminar = document.createElement('button');
+    eliminar.classList.add('message-card__eliminar');
+    eliminar.textContent = 'Eliminar';
+
+    const editar = document.createElement('button');
+    editar.classList.add('message-card__editar');
+    editar.textContent = 'Editar';
+
     card.appendChild(header);
     card.appendChild(titleEl);
     card.appendChild(contentEl);
     card.appendChild(statusEl);
+    botones.appendChild(eliminar);
+    botones.appendChild(editar);
+    card.appendChild(botones);
 
     return card;
 }

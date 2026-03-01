@@ -1,0 +1,1 @@
+//implementacion de la funcion para crear los elemento que componen la card en el DOM.

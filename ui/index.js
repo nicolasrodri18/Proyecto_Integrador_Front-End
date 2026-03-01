@@ -1,0 +1,1 @@
+//exportacion de funciones para el manejo de la creacion de elementos en el DOM.
